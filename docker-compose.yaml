@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=air_quality
+      - POSTGRES_PASSWORD=asd123
+    expose:
+      - 5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      target: dev-envs
+    ports:
+      - 8080:8080
+    environment:
+      - POSTGRES_DB=air_quality
+      - POSTGRES_PASSWORD=asd123
+    networks:
+      - spring-backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:
+
+networks:
+  spring-backend:

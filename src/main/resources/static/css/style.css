@@ -1,0 +1,32 @@
+body {
+    background-image: url("/images/bg.jpg");
+    color: white;
+}
+
+.mt-5{
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.nav-link{
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+}
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+
