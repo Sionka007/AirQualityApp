@@ -1,6 +1,5 @@
 package air.airQuality.AirQualityApp.DTO;
 
-
 public class CityDTO {
     private String cityName;
 
@@ -50,5 +49,4 @@ public class CityDTO {
     public void setCountry(String country) {
         this.country = country;
     }
-
 }

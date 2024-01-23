@@ -9,7 +9,6 @@ public class AirQualityDataDTO {
 
     private LocalDateTime timestampDTO;
 
-
     private AirQualityIndex airQualityIndexDTO;
 
     private Double coDTO;

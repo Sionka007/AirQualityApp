@@ -17,11 +17,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/city")
 public class CityController {
-
     @Autowired
     CityService cityService;
-
-
 
     @GetMapping("/{cityName}")
     public ResponseEntity<CityDTO> getCity(@PathVariable String cityName) throws AirQualityException {
@@ -50,8 +47,6 @@ public class CityController {
 
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
-
-
 
     @DeleteMapping("/{city}")
     public ResponseEntity<Long> deleteByCityName(@PathVariable String city){

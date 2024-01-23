@@ -49,15 +49,6 @@ public class AirQualityData {
         this.city = city;
     }
 
-    // Getters and setters
-    public Long getDataId() {
-        return dataId;
-    }
-
-    public void setDataId(Long dataId) {
-        this.dataId = dataId;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
     }

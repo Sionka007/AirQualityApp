@@ -28,7 +28,6 @@ public class AirQualityController {
     @Autowired
     CityService cityService;
 
-
     @PostMapping("/add-city-new-data")
     public String addNewDataByCityName(@RequestParam String cityName) throws AirQualityException,
             UnsupportedEncodingException{
@@ -69,7 +68,6 @@ public class AirQualityController {
         model.addAttribute("airQualityList", dtoList);
         model.addAttribute("cityName", city);
 
-
         return "air-quality-list";
     }
 
@@ -91,16 +89,20 @@ public class AirQualityController {
         List<String> minMaxDate = airQualityService.getMinMaxDates(cityName);
         Map<String, String> dateRange = new HashMap<>();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if (!minMaxDate.isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        LocalDateTime minDate = LocalDateTime.parse(minMaxDate.get(0), formatter);
-        LocalDateTime maxDate = LocalDateTime.parse(minMaxDate.get(minMaxDate.size() - 1), formatter);
+            LocalDateTime minDate = LocalDateTime.parse(minMaxDate.get(0), formatter);
+            LocalDateTime maxDate = LocalDateTime.parse(minMaxDate.get(1), formatter);
 
-        dateRange.put("minDate", minDate.format(outputFormatter));
-        dateRange.put("maxDate", maxDate.format(outputFormatter));
+            dateRange.put("minDate", minDate.format(outputFormatter));
+            dateRange.put("maxDate", maxDate.format(outputFormatter));
 
-        return dateRange;
+            return dateRange;
+        } else {
+            throw new AirQualityException("No data available for the specified city");
+        }
     }
 
 }

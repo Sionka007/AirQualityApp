@@ -16,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 @Service
@@ -123,8 +121,6 @@ public class AirQualityService {
                         Map<String, Object> componentsMap = (Map<String, Object>) airQualityMap.get("components");
                         Integer dtMap = (Integer) airQualityMap.get("dt");
 
-
-                        // Bezpośrednie mapowanie do AirQualityDTO
                         AirQualityData airQuality = new AirQualityData();
                         airQuality.setAirQualityIndex(AirQualityIndex.getByValue((Integer) mainMap.get("aqi")));
                         airQuality.setCo(componentsMap.get("co") instanceof Double ? (Double) componentsMap.get("co") : ((Integer) componentsMap.get("co")).doubleValue());
@@ -138,7 +134,6 @@ public class AirQualityService {
                         airQuality.setTimestamp(DataTimeConverter.unixToLocalDateTime(dtMap));
                         airQuality.setCity(cityData);
 
-                        // Dodaj logikę zapisu do bazy danych, np. cityService.saveAirQuality(airQuality);
                         airQualityRepository.save(airQuality);
                     } else {
                         throw new AirQualityException("Invalid response format");
@@ -152,14 +147,23 @@ public class AirQualityService {
         }
     }
 
-    public List<String> getMinMaxDates(String cityName){
-        List<AirQualityDataDTO> dtoList= findByCityName(cityName);
+    public List<String> getMinMaxDates(String cityName) {
+        LocalDateTime min = airQualityRepository.findMinTimestampByCityName(cityName);
+        LocalDateTime max = airQualityRepository.findMaxTimestampByCityName(cityName);
 
-        List<String> minMaxDates=new ArrayList<>();
-        minMaxDates.add(String.valueOf(dtoList.get(0).getTimestampDTO()));
-        minMaxDates.add(String.valueOf(dtoList.get(dtoList.size()-1).getTimestampDTO()));
+        if (min !=null && max != null) {
+            List<String> minMaxDates = new ArrayList<>();
 
-        return minMaxDates;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+            minMaxDates.add(min.format(formatter));
+            minMaxDates.add(max.format(formatter));
+
+
+            return minMaxDates;
+        } else {
+            throw new AirQualityException("No date min or max found in Service");
+        }
     }
 
 
