@@ -1,0 +1,45 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div>
+      <a class="navbar-brand" href="http://localhost:4200/">My todo app</a>
+    </div>
+
+    <ul class="navbar-nav">
+      <li>
+        <a
+          class="nav-link"
+          *ngIf="hardcodeAuthenticateService.isUserLoggedIn()"
+          routerLink="/welcome/todo"
+          >Home</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          *ngIf="hardcodeAuthenticateService.isUserLoggedIn()"
+          routerLink="/todos"
+          >Todos</a
+        >
+      </li>
+    </ul>
+
+    <ul class="navbar-nav navbar-collapse justify-content-end">
+      <li>
+        <a
+          class="nav-link"
+          *ngIf="!hardcodeAuthenticateService.isUserLoggedIn()"
+          routerLink="/login"
+          >Login</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          *ngIf="hardcodeAuthenticateService.isUserLoggedIn()"
+          routerLink="/logout"
+          >Logout</a
+        >
+      </li>
+    </ul>
+  </nav>
+</header>
